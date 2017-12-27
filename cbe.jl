@@ -9,7 +9,7 @@ end
 function startTurn!(turn::Int8, winner::Int8, bestPlay::String, pcHelps::Int8,
                     board::Array{String,2}, startSquares::Tuple{Array{Int64,1},Array{Int64,1}},
                     players::Array{Array{Any,1},1})::Array{Any,1}
-    actions = allActions(turn, board)
+    actions = allActions(turn, players, board)
     if isempty(actions)
         winner = Int8(3) - turn
     else
@@ -19,7 +19,7 @@ function startTurn!(turn::Int8, winner::Int8, bestPlay::String, pcHelps::Int8,
 end
 
 function createGame(n, size::Int8, pieces::String)::Game
-    board = reshape(fill("3 ", size^2), (size, size))
+    board = fill("3 ", (size,size))
     startSquares = mode.size == 4 ? ([9,14],[3,8]) : ([11,17,23], [3,9,15])
     players = [Player(collect(pieces[randperm(end)]), [], [], [], true),
                Player(collect(pieces[randperm(end)]), [], [], [], true)]
@@ -71,7 +71,7 @@ function main()::Void
         #     !playTurn!() && break
         # end
         # endTurn()
-        # turn = one(Int8) - turn
+        # turn = Int8(3) - turn
     end
 
     return
