@@ -14,7 +14,7 @@ function gameMode()::Mode
     ng = true # gameType()
     bs = Int8(4) # boardSize()
     hm = howMany()
-    pieces = whichOnes(n)
+    pieces = whichOnes(hm)
     pcHelps = Int8(3) # who()
     return Mode(ng, bs, hm, pieces, pcHelps)
 end
