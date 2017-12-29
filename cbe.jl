@@ -1,11 +1,3 @@
-mutable struct Player
-    pile::Array{Char,1}
-    hand::Array{Char,1}
-    placed::Array{Char,1}
-    played::Array{Char,1}
-    canPlace::Bool
-end
-
 include("printfs.jl")
 include("player.jl")
 # include("engine.jl")
@@ -32,11 +24,15 @@ function startTurn!(turn::Int8, bestPlay::String pcHelps::Int8, game::Game)::Arr
     return actions
 end
 
+function tagPieces(color::String, pieces::String)
+    return map(x -> color * x, collect(pieces[randperm(end)]))
+end
+
 function createGame(size::Int8, pieces::String)::Game
     board = fill("3 ", (Int64(size),Int64(size)))
     startSquares = size == 4 ? ([9,14],[3,8]) : ([11,17,23], [3,9,15])
-    players = [Player(collect(pieces[randperm(end)]), [], [], [], true),
-               Player(collect(pieces[randperm(end)]), [], [], [], true)]
+    players = [Player(tagPieces("1", pieces), [], [], [], true),
+               Player(tagPieces("2", pieces), [], [], [], true)]
     winner = zero(Int8)
     return Game(size, board, startSquares, players, winner)
 end

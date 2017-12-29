@@ -3,7 +3,6 @@ import Iterators.product
 
 include("actions.jl")
 
-
 # must specify the output type. It should be an "Action"
 @resumable function allActions(turn::Int8, game::Game)
     if players[turn].canPlace
@@ -28,7 +27,7 @@ end
     squares = filter(x -> isFreeSquare(x, game.board), game.startSquares)
     for piece, square in product(game.players[turn].hand, squares)
         action = piece * index2coords(square)
-        handIndex = findfirst(game.players[turn].hand, piece)
+        handIndex = Int8(findfirst(game.players[turn].hand, piece))
         @yield Placement(turn, piece, square, action, handIndex, [])
     end
 end
@@ -39,4 +38,12 @@ end
 
 function index2coords(index::Int8, size::Int8)::String
     return "abcde"[index % size] * string(size - floor(index / size))
+end
+
+@resumable function getAdjacents(size::Int8, square::Int8)
+    ...
+end
+
+function isSurrounded(index::Int8, player::Int8, board::Array{String,2})
+    ...
 end
